@@ -1,7 +1,12 @@
 <?php
-require_once "conexao.php";
-require_once "funcoes.php";
+
 date_default_timezone_set( 'America/Sao_Paulo' );
+
+require_once "Assets/php/Class/config.php";
+require_once "Assets/php/Class/Db.php";
+
+
+$db = new Db(DB_NAME, DB_HOST, DB_USER, DB_PASS);
 
 $dados = json_decode(file_get_contents('php://input', true)); // true no final faz com que ele venha com associativo (ASSOC)
 
@@ -13,9 +18,9 @@ $retorno = array();
 
 if(!empty($email) && !empty($senha)) {
     
-    $logado = logar($conn, $email, $senha, $lembrar);
+    $logado = $db->logar($email, $senha, $lembrar);
     
-    $ultima_tentativa = getUltimoAcesso($conn, $email);
+    $ultima_tentativa = $db->getUltimoAcesso($email);
 
     if(!empty($ultima_tentativa)){
         
@@ -30,11 +35,10 @@ if(!empty($email) && !empty($senha)) {
                     . (MINUTOS_LIMITE_LOGIN - $minutos)." minutos"
             ];
             $logado = false;
-            sair();
+            $db->sair();
         }
         else{
             if($logado == true) {
-                //header("Location: dashboard.php");
                 $retorno = [
                     'status' => 'success',
                     'message' => 'Bem vindo ' . $_SESSION['usuario']['nome'] . '!'

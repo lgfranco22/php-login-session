@@ -1,4 +1,11 @@
-<?php include_once "funcoes.php";?>
+<?php 
+
+require_once "Assets/php/Class/config.php";
+require_once "Assets/php/Class/Db.php";
+
+$db = new Db(DB_NAME, DB_HOST, DB_USER, DB_PASS);
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -11,26 +18,13 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="Assets/css/style.css">
     <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/4.2/examples/sign-in/signin.css" rel="stylesheet">
+    <link href="Assets/css/signin.css" rel="stylesheet">
   </head>
   <body class="text-center">
     <form class="form-signin" method="post" action="logar.php">
-      <img class="mb-4" src="https://getbootstrap.com/docs/4.2/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <img class="mb-4" src="Assets/images/logo-fi.svg" alt="logo" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">Identifique-se!</h1>
       <?php //flashMsg("warning");?>
       <?php //flashMsg("danger");?>
@@ -49,45 +43,9 @@
         </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="button" id="bt_login">Entrar</button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+      <p class="mt-5 mb-3 text-muted">Copyright &copy; Franco Informática <?php echo date('Y'); ?></p>
     </form>
 
-<script type="text/javascript">
-
-document.getElementById("bt_login").onclick = () => {
-  const dados = {
-    "email": document.getElementById("email").value,
-    "senha": document.getElementById("senha").value,
-    "lembrar": document.getElementById("check").checked
-  }
-  
-  const options = {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    method: "POST",
-    body: JSON.stringify(dados)
-  }
-
-  fetch("logarAjax.php", options)
-  .then(response => {
-    response.json().then(result => {
-      if(result.status == 'success'){
-        alert(result.message);
-        window.location = 'dashboard.php';
-      }
-      else{
-        let divMsg = document.getElementById('mensagens');
-        divMsg.innerHTML = `<div class="alert alert-${result.status}">${result.message}</div>`;
-      }
-    })
-  })
-
-
-}
-
-</script>
-
+<script src="Assets/js/script.js"></script>
 </body>
 </html>
